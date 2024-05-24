@@ -37,7 +37,9 @@ The `Graph` class provides methods to construct a graph, load an adjacency matri
 - `bool getHasNegativeEdge() const`: Returns whether the graph has negative edges.
 - `bool getWithWeights() const`: Returns whether the graph has weighted edges.
 
-### Operator Overloading
+## Operator Overloading
+
+### Arithmetic Operators Overloading
 
 - `Graph operator+(const Graph &g)`: Adds two graphs and returns the resulting graph.
 - `Graph operator-(const Graph &g)`: Subtracts one graph from another and returns the resulting graph.
@@ -49,14 +51,19 @@ The `Graph` class provides methods to construct a graph, load an adjacency matri
 - `Graph &operator++()`: Prefix increment operator (increases all edges by 1).
 - `Graph operator--(int)`: Postfix decrement operator (decreases all edges by 1).
 - `Graph &operator--()`: Prefix decrement operator (decreases all edges by 1).
+- `Graph &operator*=(int scalar)`: Multiplies all edges of the graph by a scalar.
+- `Graph operator*(int scalar)`: Multiplies all edges of the graph by a scalar and returns the resulting graph.
+- `Graph operator*(Graph &g)`: Multiplies two graphs (matrix multiplication) and returns the resulting graph.
+- `Graph operator*=(Graph &g)`: Multiplies two graphs (matrix multiplication) and returns the resulting graph. 
+
+
+### Comparison Operators Overloading
 - `bool operator==(Graph &g)`: Checks if two graphs are equal.
 - `bool operator<(Graph &g)`: Checks if this graph is a subgraph of another graph.
 - `bool operator>(Graph &g)`: Checks if this graph is a supergraph of another graph.
 - `bool operator<=(Graph &g)`: Checks if this graph is a subgraph or equal to another graph.
 - `bool operator>=(Graph &g)`: Checks if this graph is a supergraph or equal to another graph.
-- `Graph &operator*=(int scalar)`: Multiplies all edges of the graph by a scalar.
-- `Graph operator*(int scalar)`: Multiplies all edges of the graph by a scalar and returns the resulting graph.
-- `Graph operator*(Graph &g)`: Multiplies two graphs (matrix multiplication) and returns the resulting graph.
+
 
 ## Example Usage
 
