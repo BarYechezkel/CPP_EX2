@@ -35,7 +35,7 @@ void Graph::loadGraph(std::vector<std::vector<int>> &adjacency_matrix)
     this->withWeights = false;
     this->hasNegativeEdge = false;
 
-    if (adjacency_matrix.size() == 0)
+    if (adjacency_matrix.empty())
     {
         // If the matrix is empty, the graph is empty
         throw std::invalid_argument("The matrix is empty");
@@ -91,7 +91,7 @@ void Graph::loadGraph(std::vector<std::vector<int>> &adjacency_matrix)
 // Method to print the graph , Should print the matrix of the graph: [0, 1, 0], [1, 0, 1], [0, 1, 0]
 string Graph::printGraph()
 {
-    string result = "";
+    string result;
     cout << "Graph with " << matrix.size() << " vertices and " << numOfEdges << " edges." << std::endl;
     for (size_t i = 0; i < matrix.size() - 1; i++)
     {
@@ -439,11 +439,7 @@ Operator overloading to check equality of two graphs
 */
 bool ariel::Graph::operator==(Graph &g)
 {
-    if (!(*this < g) && !(*this > g))
-    {
-        return true;
-    }
-    return false;
+    return (!(*this < g) && !(*this > g)) ? true : false;
 }
 
 /*
@@ -516,11 +512,7 @@ uses the < , == operators
 */
 bool ariel::Graph::operator<=(Graph &g) // this <= g
 {
-    if (*this == g || *this < g)
-    {
-        return true;
-    }
-    return false;
+    return *this == g || *this < g;
 }
 
 /*
@@ -530,9 +522,6 @@ use the > , == operators
 */
 bool ariel::Graph::operator>=(Graph &g) // this >= g
 {
-    if (*this == g || *this > g)
-    {
-        return true;
-    }
-    return false;
+   
+    return *this == g || *this > g;
 }
