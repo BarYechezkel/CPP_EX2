@@ -6,7 +6,7 @@ using namespace std;
 // Constructor implementation
 Graph::Graph()
 {
-    //print the graph [0, 1, 0], [1, 0, 1], [0, 1, 0]
+    // print the graph [0, 1, 0], [1, 0, 1], [0, 1, 0]
     int size = this->matrix.size();
     for (int i = 0; i < size; i++)
     {
@@ -25,13 +25,10 @@ Graph::Graph()
         }
         this->matrix.push_back(row);
     }
-
-
-    
 }
 
 // Method to load graph from adjacency matrix
-void Graph::loadGraph( std::vector<std::vector<int>> &adjacency_matrix)
+void Graph::loadGraph(std::vector<std::vector<int>> &adjacency_matrix)
 {
     this->isDirected = false;
     this->numOfEdges = 0;
@@ -69,12 +66,14 @@ void Graph::loadGraph( std::vector<std::vector<int>> &adjacency_matrix)
                 // If the matrix has a non-zero element, it is an edge
                 numOfEdges++;
             }
-            if (adjacency_matrix[i][j] < 0){
+            if (adjacency_matrix[i][j] < 0)
+            {
                 // If the matrix has a negative element, the graph has a negative edge
                 hasNegativeEdge = true;
             }
 
-            if (adjacency_matrix[i][j] != 1 && adjacency_matrix[i][j] != 0){
+            if (adjacency_matrix[i][j] != 1 && adjacency_matrix[i][j] != 0)
+            {
                 // If the matrix has a non-zero element greater than 1, the graph has a weighted edge
                 withWeights = true;
             }
@@ -89,48 +88,42 @@ void Graph::loadGraph( std::vector<std::vector<int>> &adjacency_matrix)
     this->matrix = adjacency_matrix;
 }
 
-// Method to print the graph
-// void Graph::printGraph()
-// {
-//     std::cout << "Graph with " << matrix.size() << " vertices and "<< numOfEdges <<" edges." << std::endl;
-//     for (size_t i = 0; i < matrix.size(); i++)
-//     {
-//         for (size_t j = 0; j < matrix[i].size(); j++)
-//         {
-//             std::cout << matrix[i][j] << " ";
-//         }
-//         std::cout << std::endl;
-//     }
-  
-// }
-
 // Method to print the graph , Should print the matrix of the graph: [0, 1, 0], [1, 0, 1], [0, 1, 0]
-void Graph::printGraph()
+string Graph::printGraph()
 {
-    std::cout << "Graph with " << matrix.size() << " vertices and "<< numOfEdges <<" edges." << std::endl;
-    for (size_t i = 0; i < matrix.size()-1; i++)
+    string result = "";
+    cout << "Graph with " << matrix.size() << " vertices and " << numOfEdges << " edges." << std::endl;
+    for (size_t i = 0; i < matrix.size() - 1; i++)
     {
-        std::cout << "[";
-        for (size_t j = 0; j < matrix[i].size()-1; j++)
+        cout << "[";
+        result += "[";
+        for (size_t j = 0; j < matrix[i].size() - 1; j++)
         {
-            std::cout << matrix[i][j] << " ,";
+            cout << matrix[i][j] << " ,";
+            result += to_string(matrix[i][j]) + ", ";
         }
-        std::cout << matrix[i][matrix[i].size()-1];
-        std::cout << "], ";
+        cout << matrix[i][matrix[i].size() - 1];
+        result += to_string(matrix[i][matrix[i].size() - 1]);
+        cout << "]\n";
+        result += "]\n";
     }
-    std::cout << "[";
-        for (size_t m = 0; m < matrix[matrix.size()-1].size()-1; m++)
-        {
-            std::cout << matrix[matrix.size()-1][m] << " ,";
-        }
-        std::cout << matrix[matrix.size()-1][matrix[matrix.size()-1].size()-1];
-        std::cout << "]";
-    std::cout << std::endl;
+    cout << "[";
+    result += "[";
+    for (size_t m = 0; m < matrix[matrix.size() - 1].size() - 1; m++)
+    {
+        cout << matrix[matrix.size() - 1][m] << " ,";
+        result += to_string(matrix[matrix.size() - 1][m]) + ", ";
+    }
+    cout << matrix[matrix.size() - 1][matrix[matrix.size() - 1].size() - 1];
+    result += to_string(matrix[matrix.size() - 1][matrix[matrix.size() - 1].size() - 1]);
+    cout << "]";
+    result += "]";
+    cout << endl;
+    return result;
 }
 
-
 // Method to get the adjacency matrix
-const std::vector<std::vector<int>> Graph:: getMatrix() const
+const std::vector<std::vector<int>> Graph::getMatrix() const
 {
     return matrix;
 }
@@ -159,291 +152,387 @@ bool Graph::getWithWeights()
     return withWeights;
 }
 
+//=====================================================================================================================
+//                                     Arithmetic Operators Overloading
+//=====================================================================================================================
 
 /*
 Operator overloading for the addition of two graphs
 we will get new graph
 maybe edges will be added
-*/ 
-Graph Graph::operator+(const Graph &g){
-Graph result;
-if (matrix.size() != g.getMatrix().size()){
-    throw std::invalid_argument("The matrixes are not the same size");
-}
-size_t size =matrix.size();
-vector<vector<int>> new_matrix(size , vector<int>(size,0));
-for (size_t i = 0 ; i < size ;i++){
-    for (size_t j = 0 ; j < size ;j++){
-        new_matrix[i][j] = matrix[i][j] + g.matrix[i][j];
+*/
+Graph Graph::operator+(const Graph &g)
+{
+    Graph result;
+    if (matrix.size() != g.getMatrix().size())
+    {
+        throw std::invalid_argument("The matrixes are not the same size");
+        cout << "The matrixes are not the same size" << endl;
     }
+    size_t size = matrix.size();
+    vector<vector<int>> new_matrix(size, vector<int>(size, 0));
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            new_matrix[i][j] = matrix[i][j] + g.matrix[i][j];
+        }
+    }
+    result.loadGraph(new_matrix);
+    return result;
 }
-result.loadGraph(new_matrix);
-return result;
-}
-
 
 /*
 Operator overloading for the subtraction of two graphs
 we will get new graph
 maybe edges will removed, we can get negative edges
-*/ 
-Graph Graph::operator-(const Graph &g){
-Graph result;
-if (matrix.size() != g.getMatrix().size()){
-    throw std::invalid_argument("The matrixes are not the same size");
-}
-size_t size =matrix.size();
-vector<vector<int>> new_matrix(size , vector<int>(size,0));
-for (size_t i = 0 ; i < size ;i++){
-    for (size_t j = 0 ; j < size ;j++){
-        new_matrix[i][j] = matrix[i][j] - g.matrix[i][j];
+*/
+Graph Graph::operator-(const Graph &g)
+{
+    Graph result;
+    if (matrix.size() != g.getMatrix().size())
+    {
+        throw std::invalid_argument("The matrixes are not the same size");
     }
+    size_t size = matrix.size();
+    vector<vector<int>> new_matrix(size, vector<int>(size, 0));
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            new_matrix[i][j] = matrix[i][j] - g.matrix[i][j];
+        }
+    }
+    result.loadGraph(new_matrix);
+    return result;
 }
-result.loadGraph(new_matrix);
-return result;
-}
+
 /*
 Operator += performs a subtraction opertion to the graph that we get as a parameter.
 */
-Graph& Graph::operator+=(const Graph &g){
-if (matrix.size() != g.getMatrix().size()){
-    throw std::invalid_argument("The matrixes are not the same size");
-}
-*this= *this + g;
-return *this;
+Graph &Graph::operator+=(const Graph &g)
+{
+    if (matrix.size() != g.getMatrix().size())
+    {
+        throw std::invalid_argument("The matrixes are not the same size");
     }
+    *this = *this + g;
+    return *this;
+}
 
 /*
 Operator -= performs a add opertion to the graph that we get as a parameter.
 */
-    Graph& Graph::operator-=(const Graph &g){
-if (this->getMatrix().size() != g.getMatrix().size()){
-    throw std::invalid_argument("The matrixes are not the same size");
-}
-*this= *this - g;
-return *this;
+Graph &Graph::operator-=(const Graph &g)
+{
+    if (this->getMatrix().size() != g.getMatrix().size())
+    {
+        throw std::invalid_argument("The matrixes are not the same size");
     }
+    *this = *this - g;
+    return *this;
+}
 
 /*
 Operator overloading for the unary plus
 */
-    Graph &ariel::Graph::operator+()
-    {
-        return *this;
-    }
+Graph &ariel::Graph::operator+()
+{
+    return *this;
+}
+
 /*
 operator overloading for the unary minus
-use the * operator to multiply the graph by -1
+use the *= operator to multiply the graph by -1
 */
-    Graph &ariel::Graph::operator-()
-    {
-       return  (*this) * -1;
-    }
-
-
-
-    Graph& ariel::Graph::operator++() // ++g prefix increment
-    {
-         if (matrix.empty()){
-            throw std::invalid_argument("The matrix is empty");
-        }
-        size_t size = matrix.size();
-         for (size_t i = 0; i < size; i++)
-        {
-            for (size_t j = 0; j < size ; j++)
-            {
-                if (matrix[i][j] != 0)// only if we have an edge
-                {
-                    matrix[i][j] = matrix[i][j] + 1;
-                }
-            }
-        }
-        return *this;
-    }
-
-    Graph ariel::Graph::operator++(int)// g++ postfix increment
-    {
-        if (matrix.empty()){
-            throw std::invalid_argument("The matrix is empty");
-        }
-        Graph newGraph = *this;
-        size_t size = matrix.size();
-        for (size_t i = 0; i < size; i++)
-        {
-            for (size_t j = 0; j < size; j++)
-            {
-                if (matrix[i][j] != 0)//only if we have an edge
-                {
-                    matrix[i][j] = matrix[i][j] + 1;
-                }
-            }
-        }
-        return newGraph;
-    }
-    
-
+Graph ariel::Graph::operator-()
+{
+    return *this * -1;
+}
 
 /*
-opretor overloading for the multiplication of a graph by a scalar
+Operator overloading for the postfix increment g++
 */
-    Graph& ariel::Graph::operator*(int scalar)
+Graph ariel::Graph::operator++(int) // g++ postfix increment
+{
+    if (matrix.empty())
     {
-        if (matrix.empty()){
-            throw std::invalid_argument("The matrix is empty");
-        }
-        for (size_t i = 0; i < matrix.size(); i++)
+        throw std::invalid_argument("The matrix is empty");
+    }
+    Graph newGraph = *this;
+    size_t size = matrix.size();
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
         {
-            for (size_t j = 0; j < matrix[i].size(); j++)
+            if (matrix[i][j] != 0) // only if we have an edge
             {
-                matrix[i][j] = matrix[i][j] *scalar;
+                matrix[i][j] = matrix[i][j] + 1;
             }
         }
-        return *this;
+    }
+    return newGraph;
+}
+
+/*
+Operator overloading for the prefix increment ++g
+*/
+Graph &ariel::Graph::operator++() // ++g prefix increment
+{
+    if (matrix.empty())
+    {
+        throw std::invalid_argument("The matrix is empty");
+    }
+    size_t size = matrix.size();
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            if (matrix[i][j] != 0) // only if we have an edge
+            {
+                matrix[i][j] = matrix[i][j] + 1;
+            }
+        }
+    }
+    return *this;
+}
+
+/*
+Operator overloading for the postfix decrement g--
+*/
+Graph ariel::Graph::operator--(int)
+{
+    if (matrix.empty())
+    {
+        throw std::invalid_argument("The matrix is empty");
+    }
+    Graph newGraph = *this;
+    size_t size = matrix.size();
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            if (matrix[i][j] != 0) // only if we have an edge
+            {
+                matrix[i][j] = matrix[i][j] - 1;
+            }
+        }
+    }
+    return newGraph;
+}
+
+/*
+operator overloading for the prefix decrement --g
+*/
+Graph &ariel::Graph::operator--()
+{
+    if (matrix.empty())
+    {
+        throw std::invalid_argument("The matrix is empty");
+    }
+    size_t size = matrix.size();
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            if (matrix[i][j] != 0) // only if we have an edge
+            {
+                matrix[i][j] = matrix[i][j] - 1;
+            }
+        }
+    }
+    return *this;
+}
+
+/*
+opretor overloading for the multiplication of a graph by a scalar, the opertion work on the graph itself
+this *= scalar
+*/
+Graph &ariel::Graph::operator*=(int scalar)
+{
+    if (matrix.empty())
+    {
+        throw std::invalid_argument("The matrix is empty");
+    }
+    for (size_t i = 0; i < matrix.size(); i++)
+    {
+        for (size_t j = 0; j < matrix[i].size(); j++)
+        {
+            matrix[i][j] = matrix[i][j] * scalar;
+        }
+    }
+    return *this;
+}
+
+/*
+opretor overloading for the multiplication of a graph by a scalar, the opertion work on new graph
+g_new = g * scalar
+*/
+Graph ariel::Graph::operator*(int scalar)
+{
+    if (matrix.empty())
+    {
+        throw std::invalid_argument("The matrix is empty");
+    }
+    Graph result;
+    vector<vector<int>> new_matrix = matrix;
+    for (size_t i = 0; i < matrix.size(); i++)
+    {
+        for (size_t j = 0; j < matrix[i].size(); j++)
+        {
+            new_matrix[i][j] = matrix[i][j] * scalar;
+        }
+    }
+    result.loadGraph(new_matrix);
+    return result;
+}
+
+/*
+opretor overloading for the multiplication of two graphs, the opertion work on new graph
+g_new = g1 * g2
+*/
+Graph ariel::Graph::operator*(Graph &g)
+{
+    if (matrix.size() != g.getMatrix().size())
+    {
+        throw std::invalid_argument("The matrixes are not the same size");
+    }
+    Graph result;
+    size_t size = matrix.size();
+    vector<vector<int>> new_matrix(size, vector<int>(size, 0));
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            // for each cell in the result matrix cell(x,y)
+            // we will multiply the row x of one gragh in the colmn y of the other graph
+            for (size_t k = 0; k < size; k++)
+            {
+                new_matrix[i][j] += matrix[i][k] * g.matrix[k][j];
+            }
+        }
     }
 
+    for (size_t i = 0; i < size; i++)
+    {
+        if (new_matrix[i][i] != 0)
+        {
+            new_matrix[i][i] = 0;
+        }
+    }
+    result.loadGraph(new_matrix);
+    return result;
+}
 
+Graph ariel::Graph::operator*=(Graph &g)
+{
+   *this = *this * g;
+    return *this;
+}
 
+//=====================================================================================================================
+//                                     comparison Operators Overloading
+//=====================================================================================================================
 
+/*
+Operator overloading to check equality of two graphs
+*/
+bool ariel::Graph::operator==(Graph &g)
+{
+    if (!(*this < g) && !(*this > g))
+    {
+        return true;
+    }
+    return false;
+}
 
+/*
+operator overloading to check if one graph is contained in the other
+this < g
+*/
+bool ariel::Graph::operator<(Graph &g) // this < g
+{
+    if (matrix.empty() || g.getMatrix().empty())
+    {
+        throw std::invalid_argument("The matrix is empty");
+    }
 
+    // If the matrixes are the same, one is not containd in the other
+    if (matrix == g.getMatrix())
+    {
+        return false;
+    }
 
+    size_t size_big = g.getMatrix().size();
+    size_t size_small = matrix.size();
+    bool found = false;
+    // If `this` graph is bigger, it cannot be smaller
+    if (size_small > size_big)
+    {
+        return false;
+    }
+    for (size_t i = 0; i < size_big - size_small; i++)
+    {
+        for (size_t j = 0; j < size_big - size_small; j++)
+        {
+            if (matrix[i][j] == g.getMatrix()[i][j])
+            // we found first element that is equal
+            {
+                found = true;
+                for (size_t k = 0; k < size_small; k++)
+                {
+                    for (size_t l = 0; l < size_small; l++)
+                    {
+                        if (matrix[k][l] != g.getMatrix()[i + k][j + l])
+                        {
+                            found = false;
+                            break;
+                        }
+                    }
+                }
+                if (found)
+                    return true;
+            }
+        }
+    }
+    return false;
+}
 
+/*
+operator overloading to check if one graph is contained in the other
+this > g
+uses the < operator
+*/
+bool ariel::Graph::operator>(Graph &g) // this > g
+{
+    // enoght to check if g < this
+    return g < *this;
+}
 
+/*
+operator overloading to check if one graph is contained in the other or the graphs are equal
+this <= g
+uses the < , == operators
+*/
+bool ariel::Graph::operator<=(Graph &g) // this <= g
+{
+    if (*this == g || *this < g)
+    {
+        return true;
+    }
+    return false;
+}
 
-
-
-
-
-
-
-
-
-
-
-// // Operator overloading for the addition of two graphs
-// Graph ariel::operator+(Graph &g1, Graph &g2)
-// {
-//     std::vector<std::vector<int>> matrix1 = g1.getMatrix();
-//     std::vector<std::vector<int>> matrix2 = g2.getMatrix();
-
-//     if (matrix1.size() != matrix2.size())
-//     {
-//         // If the matrices are not the same size, they cannot be added
-//         throw std::invalid_argument("The matrices are not the same size");
-//     }
-
-//     std::vector<std::vector<int>> result;
-//     for (size_t i = 0; i < matrix1.size(); i++)
-//     {
-//         std::vector<int> row;
-//         for (size_t j = 0; j < matrix1[i].size(); j++)
-//         {
-//             row.push_back(matrix1[i][j] + matrix2[i][j]);
-//         }
-//         result.push_back(row);
-//     }
-
-//     Graph g;
-//     g.loadGraph(result);
-//     return g;
-// }
-
-// // molitiply 2 matrix
-// Graph ariel::operator*(Graph &g1, Graph &g2)
-// {
-//     std::vector<std::vector<int>> matrix1 = g1.getMatrix();
-//     std::vector<std::vector<int>> matrix2 = g2.getMatrix();
-
-//     if (matrix1.size() != matrix2[0].size())
-//     {
-//         // If the number of columns in the first matrix is not equal to the number of rows in the second matrix, they cannot be multiplied
-//         throw std::invalid_argument("The number of columns in the first matrix must be equal to the number of rows in the second matrix.");
-//     }
-
-//     std::vector<std::vector<int>> result;
-//     for (size_t i = 0; i < matrix1.size(); i++)
-//     {
-//         std::vector<int> row;
-//         for (size_t j = 0; j < matrix2[i].size(); j++)
-//         {
-//             int sum = 0;
-//             for (size_t k = 0; k < matrix1[i].size(); k++)
-//             {
-//                 sum += matrix1[i][k] * matrix2[k][j];
-//             }
-//             row.push_back(sum);
-//         }
-//         result.push_back(row);
-//     }
-
-//     Graph g;
-//     g.loadGraph(result);
-//     return g;
-// }
-  
-
-// // Operator overloading for the division of a graph by a scalar
-
-// Graph Graph::operator/=(int scalar)
-// {
-//     if (scalar == 0)
-//     {
-//         // If the scalar is zero, the division is not possible
-//         throw std::invalid_argument("Division by zero");
-//     }
-
-//     std::vector<std::vector<int>> result;
-//     for (size_t i = 0; i < matrix.size(); i++)
-//     {
-//         std::vector<int> row;
-//         for (size_t j = 0; j < matrix[i].size(); j++)
-//         {
-//             row.push_back(matrix[i][j] / scalar);
-//         }
-//         result.push_back(row);
-//     }
-
-//     Graph g;
-//     g.loadGraph(result);
-//     return g;
-// }
-
-// // Operator overloading for the output stream
-// // std::ostream &ariel::operator<<(std::ostream &os, Graph &graph)
-// // {
-// //     graph.printGraph();
-// //     for (size_t i = 0; i < graph.getMatrix().size(); i++)
-// //     {
-// //         for (size_t j = 0; j < graph.getMatrix()[i].size(); j++)
-// //         {
-// //             os << graph.getMatrix()[i][j] << " ";
-// //         }
-// //         os << std::endl;
-// //     }
-// //     return os;
-// // }
-
-// // Operator overloading for the multiplication of a graph by a scalar
-// Graph Graph::operator*=(int scalar)
-// {
-//     std::vector<std::vector<int>> result;
-//     for (size_t i = 0; i < matrix.size(); i++)
-//     {
-//         std::vector<int> row;
-//         for (size_t j = 0; j < matrix[i].size(); j++)
-//         {
-//             row.push_back(matrix[i][j] * scalar);
-//         }
-//         result.push_back(row);
-//     }
-
-//     this->loadGraph(result);
-//     return *this;
-
-// }
-
-
-
-
-
-
+/*
+operator overloading to check if one graph is contained in the other or the graphs are equal
+this >= g
+use the > , == operators
+*/
+bool ariel::Graph::operator>=(Graph &g) // this >= g
+{
+    if (*this == g || *this > g)
+    {
+        return true;
+    }
+    return false;
+}

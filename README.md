@@ -1,23 +1,88 @@
-# מטלה 2 - גרפים והעמסת אופרטורים
-
-במטלה הקודמת מימשתם את המחלקה `Graph.cpp` המאפשרת ייצוג של גרפים בעזרת מטריצת שכנויות. במטלה הזאת, אתם תרחיבו את המחלקה ותוסיפו תמיכה באופרטורים חשבוניים על גרפים.
-כאמור, הגרפים מיוצגים בעזרת מטריצת שכנויות, לכן כל האופרטורים צריכים להיות חוקיים עבור מטריצות (כמו שלמדתם בקורס אלגברה לינארית).
-
-אתם תצטרכו להוסיף את האופרטורים הבאים:
-
-- שישה אופרטורים חשבוניים: חיבור (+) הוספה (+=) פלוס אונרי (+), ושלושת האופרטורים המקבילים לחיסור (-). כאמור, חיבור/חיסור של שתי מטריצות מוגדר רק על מטריצות מאותו סדר גודל nXn. ניסיון לחבר/לחסר שתי מטריצות שלא מקיימות תנאי זה יגרום לזריקת שגיאה.
-- שישה אופרטורי השוואה: גדול, גדול-או-שווה, קטן, קטן-או-שווה, שווה, לא-שווה. לשם מטלה זו כללי השוואת גרפים הם כדלקמן:
-
-  1. גרפים G1 ו-G2 ייקראו שווים אם הם מאותו סדר גודל ומכילים את אותן הצלעות (והמשקלים של הצלעות זהים) או אם G1 לא גדול מ-G2 וגם G2 לא גדול מ-G1.
-  2. גרף G2 גדול מגרף G1 אם הגרף G1 מוכל ממש בגרף G2. אם אף גרף לא מוכל ממש בשני והגרפים לא שווים, אז גרף G2 גדול מגרף G1 אם מספר הצלעות ב-G2 גדול ממספר הצלעות ב-G1. אם בכל זאת מספר הצלעות זהה, אז הגרף G2 גדול מהגרף G1 אם המטריצה המייצגת של G2 בעלת סדר גודל גבוה יותר משל G1.
-
-- הגדלה ב-1 (++) והקטנה ב-1 (--) לפני ואחרי המספר. פעולה זו תגדיל או תקטין ב-1 את כל המשקלים של הצלעות בגרף.
-- הכפלה בסקלר שלם (`int`) - מכפיל את המשקל של כל הצלעות.
-- הכפלת גרפים - אנחנו מגדירים את פעולת הכפל בין גרף G1 לגרף G2 על ידי מכפלה של המטריצות המייצגות של שני הגרפים. התוצאה צריכה להיות מטריצה המייצגת גרף. ניסיון לבצע כפל בין גרפים בגדלים שונים צריך לזרוק שגיאה.
-- אופרטור פלט - הדפסה הגיונית של הגרף (צורת ההפדסה היא לשיקולכם).
+# CPP_EX2 - Operators Overloading
 
 
-כמו כן, עליכם לכלול גם את הקובץ `Algorithms.cpp` מהמטלה הקודמת ולראות כיצד הפונקציות שהגדרתם בפעם הקודמת משתנות עכשיו. בנוסף לקבצים של המטלה אתם נדרשים להגיש גם קובץ README המתאר את אופן המימוש ואת החלוקה שביצעתם בקוד (סוג של מדריך משתמש).
-עליכם לכתוב בתחילת כל קובץ את מספר תעודת הזהות שלכם ואת המייל. אי עמידה בהנחיות תגרור הפחתה בציון.
-בהצלחה!
+## Author
+-[Bar Yechezkel]
+-Email: baryechezkel@gmail.com
 
+## Overview
+
+This library provides a `Graph` class representing an undirected or directed graph using an adjacency matrix. It includes various operators to manipulate and compare graphs, such as addition, subtraction, scalar multiplication, and subgraph checks.
+
+## Class Definition
+
+### `Graph`
+
+The `Graph` class provides methods to construct a graph, load an adjacency matrix, print the graph, and perform various arithmetic and comparison operations.
+
+### Member Variables
+
+- `std::vector<std::vector<int>> matrix`: The adjacency matrix representing the graph.
+- `bool isDirected`: Indicates whether the graph is directed.
+- `int numOfEdges`: The number of edges in the graph.
+- `bool withWeights`: Indicates whether the graph has weighted edges.
+- `bool hasNegativeEdge`: Indicates whether the graph has negative edges.
+
+### Constructors
+
+- `Graph()`: Default constructor that initializes an empty graph.
+
+### Methods
+
+- `void loadGraph(std::vector<std::vector<int>> &adjacency_matrix)`: Loads the graph from the given adjacency matrix and sets properties like `isDirected`, `numOfEdges`, `withWeights`, and `hasNegativeEdge`.
+- `std::string printGraph()`: Prints the adjacency matrix of the graph and returns it as a string.
+- `const std::vector<std::vector<int>> getMatrix() const`: Returns the adjacency matrix.
+- `bool getIsDirected() const`: Returns whether the graph is directed.
+- `int getNumOfEdges() const`: Returns the number of edges in the graph.
+- `bool getHasNegativeEdge() const`: Returns whether the graph has negative edges.
+- `bool getWithWeights() const`: Returns whether the graph has weighted edges.
+
+### Operator Overloading
+
+- `Graph operator+(const Graph &g)`: Adds two graphs and returns the resulting graph.
+- `Graph operator-(const Graph &g)`: Subtracts one graph from another and returns the resulting graph.
+- `Graph &operator+=(const Graph &g)`: Adds another graph to this graph.
+- `Graph &operator-=(const Graph &g)`: Subtracts another graph from this graph.
+- `Graph &operator+()`: Unary plus operator.
+- `Graph &operator-()`: Unary minus operator (negates the graph).
+- `Graph operator++(int)`: Postfix increment operator (increases all edges by 1).
+- `Graph &operator++()`: Prefix increment operator (increases all edges by 1).
+- `Graph operator--(int)`: Postfix decrement operator (decreases all edges by 1).
+- `Graph &operator--()`: Prefix decrement operator (decreases all edges by 1).
+- `bool operator==(Graph &g)`: Checks if two graphs are equal.
+- `bool operator<(Graph &g)`: Checks if this graph is a subgraph of another graph.
+- `bool operator>(Graph &g)`: Checks if this graph is a supergraph of another graph.
+- `bool operator<=(Graph &g)`: Checks if this graph is a subgraph or equal to another graph.
+- `bool operator>=(Graph &g)`: Checks if this graph is a supergraph or equal to another graph.
+- `Graph &operator*=(int scalar)`: Multiplies all edges of the graph by a scalar.
+- `Graph operator*(int scalar)`: Multiplies all edges of the graph by a scalar and returns the resulting graph.
+- `Graph operator*(Graph &g)`: Multiplies two graphs (matrix multiplication) and returns the resulting graph.
+
+## Example Usage
+
+### Creating and Loading a Graph
+
+```cpp
+#include "Graph.hpp"
+#include <iostream>
+
+using namespace ariel;
+using namespace std;
+
+int main() {
+    // Create an empty graph
+    Graph g;
+
+    // Load graph with an adjacency matrix
+    vector<vector<int>> adjacency_matrix = {
+        {0, 1, 0},
+        {1, 0, 1},
+        {0, 1, 0}
+    };
+    g.loadGraph(adjacency_matrix);
+
+    // Print the graph
+    cout << g.printGraph() << endl;
+
+    return 0;
+}
