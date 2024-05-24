@@ -2,12 +2,12 @@
 
 
 ## Author
--[Bar Yechezkel]
--Email: baryechezkel@gmail.com
+- Bar Yechezkel
+- Email: baryechezkel@gmail.com
 
 ## Overview
-
-This library provides a `Graph` class representing an undirected or directed graph using an adjacency matrix. It includes various operators to manipulate and compare graphs, such as addition, subtraction, scalar multiplication, and subgraph checks.
+This repository is the continues implementations of the Graph from EX1 , with the addition of operator overloading for the Graph class in C++.
+It includes various operators to manipulate and compare graphs, such as addition, subtraction, scalar multiplication, and subgraph checks.
 
 ## Class Definition
 
@@ -90,6 +90,37 @@ int main() {
 
     // Print the graph
     cout << g.printGraph() << endl;
+
+    // Addition (+)
+    Graph g3 = g1 + g2;
+    cout << "g1 + g2:" << endl << g3 << endl;
+
+    // Subtraction (-)
+    Graph g4 = g1 - g2;
+    cout << "g1 - g2:" << endl << g4 << endl;
+
+     // Addition and Assignment (+=)
+     g1 += g2;
+    cout << "g1 after g1 += g2:" << endl << g1 << endl;
+
+     // Subtraction and Assignment (-=)
+    g2 -= g1;
+    cout << "g2 after g2 -= g1:" << endl << g2 << endl;
+
+    // Comparison Operators (==, !=, <, <=, >, >=)
+    bool areEqual = g1 == g2;
+    cout << "g1 == g2: " << areEqual << endl;
+
+    // Increment (++, ++(int)) (prefix\postfix)
+    Graph g5 = g1++;
+    cout << "g1 after g1++:" << endl << g1 << endl;
+    cout << "g5 (before increment):" << endl << g5 << endl;
+    g5=++g1;
+    cout <<"g1 incremented first, g5:"<< endl << g5 <<endl;
+
+    // Multiplication by Scalar (*)
+    Graph g8 = g1 * 2;
+    cout << "g1 * 2:" << endl << g8 << endl;
 
     return 0;
 }
