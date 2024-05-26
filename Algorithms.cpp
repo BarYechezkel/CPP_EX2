@@ -75,15 +75,14 @@ string Algorithms::shortestPath(Graph &g, int start, int end)
         // No path exists from start to end
         return "-1";
     }
-    else
-    {
+    
         // cout << "The shortest path from " << start << " to " << end << " is: ";
         for (size_t i = 0; i < path.size() - 1; i++)
         {
             result += to_string(path[i]) + "->";
         }
         result += to_string(path[path.size() - 1]);
-    }
+    
     // cout << result << endl;
     return result;
 }
