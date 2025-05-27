@@ -3,7 +3,6 @@
 
 ## Author
 - Bar Yechezkel
-- Email: baryechezkel@gmail.com
 
 ## Overview
 This repository is the continues implementations of the Graph from EX1 , with the addition of operator overloading for the Graph class in C++.
